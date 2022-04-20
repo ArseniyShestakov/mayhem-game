@@ -1,0 +1,63 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://character.tscn" type="PackedScene" id=1]
+[ext_resource path="res://camera.gd" type="Script" id=2]
+[ext_resource path="res://level.gd" type="Script" id=3]
+
+[sub_resource type="Gradient" id=1]
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="PhysicsMaterial" id=3]
+
+[sub_resource type="OpenSimplexNoise" id=6]
+
+[sub_resource type="NoiseTexture" id=5]
+noise = SubResource( 6 )
+
+[sub_resource type="CircleShape2D" id=4]
+radius = 97.4713
+
+[node name="Node2D" type="Node2D"]
+position = Vector2( -351.891, 12.2043 )
+script = ExtResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 1138.51, 629.034 )
+scale = Vector2( 1.11665, 1255 )
+texture = SubResource( 2 )
+
+[node name="character" parent="." instance=ExtResource( 1 )]
+position = Vector2( 456, 424 )
+z_index = 10
+
+[node name="enemy" parent="." instance=ExtResource( 1 )]
+position = Vector2( 1572.7, 859.288 )
+z_index = 10
+
+[node name="Area2D" type="StaticBody2D" parent="."]
+physics_material_override = SubResource( 3 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PoolVector2Array( 33.1733, 4.25388, 2303.18, -12.0186, 2311.31, 1316.22, -42.0867, 1297.91, -29.8824, 65.2755, 45.3777, 65.2755, 41.3095, 1212.48, 2254.36, 1230.79, 2238.09, 34.7647, 27.0712, 42.9009 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 563.433, 534.956 )
+current = true
+script = ExtResource( 2 )
+
+[node name="ChargerArea" type="Area2D" parent="."]
+position = Vector2( 1610.97, 549.195 )
+
+[node name="Sprite" type="Sprite" parent="ChargerArea"]
+position = Vector2( 5.08521, -1.01697 )
+scale = Vector2( 0.296821, 0.304767 )
+texture = SubResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChargerArea"]
+shape = SubResource( 4 )
+
+[connection signal="level_clicked" from="." to="character" method="_on_Node2D_level_clicked"]
+[connection signal="body_entered" from="ChargerArea" to="character" method="_on_ChargerArea_body_entered"]
+[connection signal="body_exited" from="ChargerArea" to="character" method="_on_ChargerArea_body_exited"]
